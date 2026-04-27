@@ -44,6 +44,10 @@ Diagnóstico: hall sensor com problema elétrico — possivelmente sensor 3 com 
 - **Bateria 16S8P:** OK.
 - **Pendência futura (sem urgência):** abrir o cubo do dianteiro um dia pra investigar o cabo de hall na entrada do eixo (ponto clássico de quebra por flexão). Se o sensor 3 estiver morto, troca por SS41 ou A3144 latching.
 
+## Nota sobre o setup de conexão usado no diagnóstico
+
+Durante esta sessão, o VESC Tool estava rodando no PC conectado via IP bridge a um celular, que por sua vez conectava ao VESC por Bluetooth. Segundo relatos no [fórum pev.dev](https://pev.dev/t/diagnosing-hall-sensors/1795/3), essa cadeia de conexão (Bluetooth + bridge) pode introduzir latência e ruído que comprometem ferramentas de diagnóstico como `hall_analyze`. O `hall_analyze` não rodou corretamente neste setup — possivelmente seria necessário conectar o cabo USB direto ao VESC para resultados confiáveis. Isso não invalida o diagnóstico de hall com defeito (os sintomas de vibração e os plots com glitches são consistentes), mas o resultado do `hall_analyze` deveria ser confirmado com conexão direta antes de conclusões definitivas sobre qual sensor está falhando.
+
 ## Aprendizados técnicos da sessão
 
 - ADC ativo bloqueia controle pela interface do VESC Tool (mudar pra "No App" pra testar).
