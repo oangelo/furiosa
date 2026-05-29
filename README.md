@@ -19,14 +19,14 @@ Triciclo elétrico documentado em todos os detalhes.
 ```
 furiosa/
 ├── specs/           # Especificações técnicas detalhadas
-├── manutencao/      # Histórico de manutenções e reparos
-├── modificacoes/    # Modificações e upgrades realizados
-└── fotos/           # Fotos e imagens
+├── maintenance/     # Histórico de manutenções e reparos
+├── mods/            # Modificações e upgrades realizados
+└── media/           # Fotos, vídeos e imagens
 ```
 
 ## Documentação
 
 - [Especificações Técnicas](specs/)
-- [Histórico de Manutenção](manutencao/)
-- [Modificações e Upgrades](modificacoes/)
-- [Fotos](fotos/)
+- [Histórico de Manutenção](maintenance/)
+- [Modificações e Upgrades](mods/)
+- [Mídia](media/)
