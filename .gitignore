@@ -1,0 +1,11 @@
+# FreeCAD backup files
+*.FCBak
+*.fcbak
+
+# STEP files (exported CAD)
+*.step
+*.stp
+
+# Temporary files
+*.tmp
+*~
