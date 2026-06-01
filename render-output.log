@@ -1,0 +1,1 @@
+Exception while processing file: render-parts.py [module 'FreeCADGui' has no attribute 'showMainWindow']

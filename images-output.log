@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "/home/oangelo/git/furiosa/generate-images.py", line 126, in <module>
+    success = generate_part_images()
+  File "/home/oangelo/git/furiosa/generate-images.py", line 65, in generate_part_images
+    b.ViewObject.Visibility = False
+    ^^^^^^^^^^^^
+NameError: Unknown document 'bus_box'
+======================================================================
+GERADOR DE IMAGENS - BUS BOX (PEÇAS SEPARADAS)
+======================================================================
+
+Abrindo documento: /home/oangelo/git/furiosa/bus-box.FCStd
+Documento carregado: bus_box
+Inicializando GUI...
+Peça encontrada: Base
+Peça encontrada: tampa
+
+Processando: Base
+QThreadStorage: entry 8 destroyed before end of thread 0x555f38f623d0
+QThreadStorage: entry 7 destroyed before end of thread 0x555f38f623d0
+QThreadStorage: entry 6 destroyed before end of thread 0x555f38f623d0
+QThreadStorage: entry 2 destroyed before end of thread 0x555f38f623d0
+QThreadStorage: entry 1 destroyed before end of thread 0x555f38f623d0

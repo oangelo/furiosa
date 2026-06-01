@@ -1,0 +1,21 @@
+BUS BOX - INFORMAÇÕES DAS PEÇAS
+==================================================
+
+Peça 1: Base
+  Nome: Body
+  Tipo: PartDesign::Body
+  Dimensões:
+    Comprimento (X): 67.00 mm
+    Largura (Y): 42.00 mm
+    Altura (Z): 25.00 mm
+  Volume: 47729.95 mm³
+
+Peça 2: tampa
+  Nome: Body001
+  Tipo: PartDesign::Body
+  Dimensões:
+    Comprimento (X): 67.00 mm
+    Largura (Y): 42.00 mm
+    Altura (Z): 25.00 mm
+  Volume: 30497.39 mm³
+

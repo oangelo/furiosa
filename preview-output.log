@@ -1,0 +1,82 @@
+============================================================
+GERADOR DE PREVIEW - BUS BOX
+============================================================
+
+Abrindo documento: /home/oangelo/git/furiosa/bus-box.FCStd
+Documento carregado: bus_box
+Total de objetos: 40
+
+--- Objetos no documento ---
+  Body: Base (Type: PartDesign::Body)
+    Volume: 47729.95 mm³
+  Origin: Origem (Type: App::Origin)
+  X_Axis: X-axis (Type: App::Line)
+  Y_Axis: Y-axis (Type: App::Line)
+  Z_Axis: Z-axis (Type: App::Line)
+  XY_Plane: XY-plane (Type: App::Plane)
+  XZ_Plane: XZ-plane (Type: App::Plane)
+  YZ_Plane: YZ-plane (Type: App::Plane)
+  Sketch: Sketch (Type: Sketcher::SketchObject)
+  Pad: Pad (Type: PartDesign::Pad)
+    Volume: 70350.00 mm³
+  Sketch001: Sketch001 (Type: Sketcher::SketchObject)
+  Pocket: Pocket (Type: PartDesign::Pocket)
+    Volume: 63850.00 mm³
+  Sketch002: Sketch002 (Type: Sketcher::SketchObject)
+  Pocket001: Pocket001 (Type: PartDesign::Pocket)
+    Volume: 48670.00 mm³
+  Body001: tampa (Type: PartDesign::Body)
+    Volume: 30497.39 mm³
+  Origin001: Origem001 (Type: App::Origin)
+  X_Axis001: X-axis001 (Type: App::Line)
+  Y_Axis001: Y-axis001 (Type: App::Line)
+  Z_Axis001: Z-axis001 (Type: App::Line)
+  XY_Plane001: XY-plane001 (Type: App::Plane)
+  XZ_Plane001: XZ-plane001 (Type: App::Plane)
+  YZ_Plane001: YZ-plane001 (Type: App::Plane)
+  Binder: Binder (Type: PartDesign::SubShapeBinder)
+  CopyPocket001: CopyPocket001 (Type: PartDesign::ShapeBinder)
+  Sketch003: Sketch003 (Type: Sketcher::SketchObject)
+  Pad001: Pad001 (Type: PartDesign::Pad)
+    Volume: 70350.00 mm³
+  Sketch004: Sketch004 (Type: Sketcher::SketchObject)
+  Pocket002: Pocket002 (Type: PartDesign::Pocket)
+    Volume: 50110.00 mm³
+  Sketch005: Sketch005 (Type: Sketcher::SketchObject)
+  Pocket003: Pocket003 (Type: PartDesign::Pocket)
+    Volume: 48267.88 mm³
+  Sketch006: Sketch006 (Type: Sketcher::SketchObject)
+  Pocket004: Pocket004 (Type: PartDesign::Pocket)
+    Volume: 31710.00 mm³
+  Sketch007: Sketch007 (Type: Sketcher::SketchObject)
+  Pocket005: Pocket005 (Type: PartDesign::Pocket)
+    Volume: 30955.23 mm³
+  Sketch008: Sketch008 (Type: Sketcher::SketchObject)
+  Pocket006: Pocket006 (Type: PartDesign::Pocket)
+    Volume: 30763.58 mm³
+  Chamfer: Chamfer (Type: PartDesign::Chamfer)
+    Volume: 47842.54 mm³
+  Fillet: Fillet (Type: PartDesign::Fillet)
+    Volume: 47762.95 mm³
+  Fillet004: Fillet004 (Type: PartDesign::Fillet)
+    Volume: 47729.95 mm³
+  Fillet005: Fillet005 (Type: PartDesign::Fillet)
+    Volume: 30497.39 mm³
+
+--- Objeto Principal ---
+Nome: Pad
+Label: Pad
+Volume: 70350.00 mm³
+
+--- Dimensões ---
+Comprimento (X): 67.00 mm
+Largura (Y): 42.00 mm
+Altura (Z): 25.00 mm
+
+Exportando STL: /home/oangelo/git/furiosa/bus-box-preview.stl
+STL gerado com sucesso! Tamanho: 3052 bytes
+Informações salvas: /home/oangelo/git/furiosa/bus-box-info.txt
+
+============================================================
+CONCLUÍDO COM SUCESSO!
+============================================================

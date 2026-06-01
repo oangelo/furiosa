@@ -1,0 +1,28 @@
+======================================================================
+GERADOR DE IMAGENS - BUS BOX (PEÇAS SEPARADAS)
+======================================================================
+
+Abrindo documento: /home/oangelo/git/furiosa/bus-box.FCStd
+Documento carregado: bus_box
+Peça encontrada: Base
+Peça encontrada: tampa
+
+Exportando peças como STEP...
+  ✓ bus-box-Base.step
+  ✓ bus-box-tampa.step
+
+Informações salvas: bus-box-parts-info.txt
+
+Script de renderização criado: render-parts.py
+Para gerar as imagens PNG, execute:
+  freecad render-parts.py
+
+======================================================================
+PEÇAS EXPORTADAS COMO STEP!
+======================================================================
+
+Arquivos gerados:
+  - bus-box-Base.step
+  - bus-box-tampa.step
+  - bus-box-parts-info.txt
+  - render-parts.py (para gerar PNGs)

@@ -1,0 +1,34 @@
+======================================================================
+GERADOR DE DESENHO TÉCNICO - BUS BOX
+======================================================================
+
+Abrindo documento: /home/oangelo/git/furiosa/bus-box.FCStd
+Documento carregado: bus_box
+Objeto principal encontrado: Base
+
+Criando página TechDraw...
+AVISO: Template não encontrado: /usr/share/freecad/Mod/TechDraw/Templates/A4_Landscape_ISO7200.svg
+Criando página sem template...
+
+Criando vistas ortográficas...
+  ✓ Vista Frontal (Front) adicionada
+  ✓ Vista Superior (Top) adicionada
+  ✓ Vista Lateral Direita (Right) adicionada
+
+Adicionando vista isométrica...
+  ✓ Vista isométrica adicionada
+
+Recomputando documento...
+
+Documento salvo: /home/oangelo/git/furiosa/bus-box-technical-drawing.FCStd
+AVISO: Não foi possível exportar SVG: 'NoneType' object has no attribute 'exportPage'
+DXF exportado: /home/oangelo/git/furiosa/bus-box-technical-drawing.dxf
+
+======================================================================
+DESENHO TÉCNICO GERADO COM SUCESSO!
+======================================================================
+
+Arquivos gerados:
+  - bus-box-technical-drawing.FCStd (FreeCAD com desenho)
+  - bus-box-technical-drawing.svg (Vetorial)
+  - bus-box-technical-drawing.dxf (CAD)
