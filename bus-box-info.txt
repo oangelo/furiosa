@@ -1,0 +1,11 @@
+BUS BOX - INFORMAÇÕES DO MODELO
+==================================================
+
+Arquivo: bus-box.FCStd
+Objeto: Pad
+Volume: 70350.00 mm³
+
+Dimensões:
+  Comprimento (X): 67.00 mm
+  Largura (Y): 42.00 mm
+  Altura (Z): 25.00 mm
