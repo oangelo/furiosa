@@ -18,6 +18,10 @@ Triciclo elétrico documentado em todos os detalhes.
 
 ```
 furiosa/
+├── busbar/          # Sistema de conexão de alta amperagem
+│   ├── busbar.md    # Documentação geral do sistema
+│   └── bus-box/     # Caixa protetora da busbar
+│       └── exports/ # Arquivos exportados (STEP, STL, etc.)
 ├── specs/           # Especificações técnicas detalhadas
 ├── maintenance/     # Histórico de manutenções e reparos
 ├── mods/            # Modificações e upgrades realizados
@@ -26,6 +30,7 @@ furiosa/
 
 ## Documentação
 
+- [Sistema Busbar](busbar/)
 - [Especificações Técnicas](specs/)
 - [Histórico de Manutenção](maintenance/)
 - [Modificações e Upgrades](mods/)

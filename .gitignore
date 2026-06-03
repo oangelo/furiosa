@@ -1,11 +1,21 @@
-# FreeCAD backup files
+# FreeCAD backups e temporários
 *.FCBak
 *.fcbak
+*.log
+temp-*
+__pycache__/
+.ruff_cache/
 
-# STEP files (exported CAD)
+# Scripts Python (não commitar por hora)
+generate-*.py
+render-*.py
+
+# Exports gerados sob demanda
 *.step
-*.stp
+*.stl
+*.dxf
+*.png
 
-# Temporary files
+# Arquivos temporários
 *.tmp
 *~
