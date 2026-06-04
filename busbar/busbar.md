@@ -76,8 +76,10 @@ múltiplas conexões de forma organizada e segura.
 
 | Parâmetro | Valor |
 |-----------|-------|
-| Tensão nominal | _a definir_ (provavelmente 48V ou 72V) |
-| Corrente máxima | _a definir_ |
+| Tensão nominal | 60V (16S Li-ion) |
+| Tensão máxima | 67.2V |
+| Corrente máxima | ~80A contínuos (limite das células) |
+| Corrente prática | até 100A |
 | Seção do cabo | _a definir_ |
 | Tipo de conexão | Parafuso M6 com terminal olhal |
 
