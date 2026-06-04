@@ -97,19 +97,39 @@ Documentação técnica completa do triciclo elétrico Furiosa.
 
 ---
 
-## Bateria
+## Baterias
 
-### Pack
+Duas baterias 16S ligadas em paralelo via busbar.
+
+### Bateria 1 — 16S8P
 
 | Parâmetro | Valor |
 |-----------|-------|
 | Configuração | 16S8P |
+| Capacidade | 28 Ah (3500 mAh × 8P) |
+| Corrente máxima contínua | ~80A (10.2A/célula × 8P) |
+| BMS | Daly Smart BMS 100A 16S |
+
+### Bateria 2 — 16S6P
+
+| Parâmetro | Valor |
+|-----------|-------|
+| Configuração | 16S6P |
+| Capacidade | 21 Ah (3500 mAh × 6P) |
+| Corrente máxima contínua | ~60A (10.2A/célula × 6P) |
+| BMS | Daly Smart BMS 60A 16S |
+
+### Pack Combinado (Paralelo)
+
+| Parâmetro | Valor |
+|-----------|-------|
+| Configuração | 16S(8P+6P) = 16S14P |
 | Tensão nominal | 60V |
 | Tensão máxima | 67.2V (4.2V/célula) |
 | Tensão mínima | 48.0V (3.0V/célula) |
-| Capacidade total | 28 Ah (3500 mAh × 8P) |
-| Corrente máxima contínua | ~80A (10.2A/célula × 8P) |
-| Corrente prática limite | 100A |
+| Capacidade total | 49 Ah |
+| Corrente máxima contínua | ~140A |
+| Corrente prática limite | 100A (limitado pelo BMS menor) |
 
 ### Células — EVE INR18650-35V
 
@@ -125,17 +145,14 @@ Documentação técnica completa do triciclo elétrico Furiosa.
 | Peso | ~48g |
 | Dimensões | 18.3mm × 65.0mm |
 
-### BMS — Daly Smart BMS 100A 16S
+### BMS — Daly Smart BMS
 
-| Parâmetro | Valor |
-|-----------|-------|
-| Modelo | Daly Smart BMS 100A 16S Li-ion |
-| Tensão | 48V/60V (16S) |
-| Corrente contínua | 100A |
-| Balanço | Passivo |
-| Comunicação | WiFi + CAN + Bluetooth |
-| Monitoramento | App mobile "Smart BMS" |
-| Status | Substituiu BMS original que queimou MOSFET de descarga |
+| Parâmetro | Bateria 1 | Bateria 2 |
+|-----------|-----------|-----------|
+| Corrente contínua | 100A | 60A |
+| Balanço | Passivo | Passivo |
+| Comunicação | WiFi + CAN + Bluetooth | WiFi + CAN + Bluetooth |
+| Monitoramento | App mobile "Smart BMS" | App mobile "Smart BMS" |
 
 ### Voltage Cutoffs (16S)
 

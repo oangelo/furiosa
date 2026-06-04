@@ -1,318 +1,222 @@
-# Sistema de Liga/Desliga - Furiosa
+# Sistema de Liga/Desliga — Furiosa
 
-## Visão Geral
+## O Problema da Faísca
 
-Sistema de controle de energia para o triciclo elétrico Furiosa, com proteção de pré-carga para os VESCs e operação intuitiva tipo "chave de carro".
+Os controladores VESC possuem capacitores de entrada grandes (~1000µF cada, ~2000µF total no sistema). Quando a bateria é conectada diretamente a capacitores descarregados, a diferença de potencial é máxima e a corrente de surto é limitada apenas pela resistência interna dos capacitores e da fiação — praticamente um curto-circuito momentâneo.
 
-**Localização:** Caixa separada próxima à bateria
-**Tensão:** 60V nominal (16S Li-ion)
-**Corrente máxima:** 100A (limitado pela bateria)
-**Status:** Em desenvolvimento
+**Corrente de surto estimada:**
+```
+I = V / R_esr
+I = 60V / ~0.05Ω = ~1200A (pico teórico)
+```
+
+Na prática a corrente é menor (limitada pela indutância e resistência dos cabos), mas o suficiente para:
+
+- **Arco elétrico** no momento da conexão — degrada conectores e terminais
+- **Vaporização de material** nos contatos —Connectores XT90 são projetados para 90A contínuos, não para picos de centenas de ampères
+- **Risco de queimadura** se o conector estiver na mão
+- **Danos ao BMS** — o surto passa pelo BMS antes de chegar aos capacitores
+
+O problema é idêntico ao de ligar uma chave em um banco de capacitores — sempre que a tensão do capacitor é muito diferente da tensão da fonte, haverá um transiente de corrente proporcional à diferença.
+
+## Anti-Spark Switches Comerciais
+
+Existem switches anti-spark dedicados que resolvem o problema:
+
+- **Flipsky Anti-Spark Switch** (~R$ 200-300)
+- **MakerX Anti-Spark Switch** (~R$ 150-250)
+- **Vedder Anti-Spark Switch** (open-source, ~R$ 100 em componentes)
+
+Funcionam com um MOSFET que faz a pré-carga gradualmente e depois liga completamente. São compactos e plug-and-play.
+
+**Problemas:**
+- Preço elevado para o que fazem
+- Limitados em corrente (tipicamente 100-200A)
+- Componente adicional que pode falhar
+- Difícil reposição no Brasil
+
+## Solução Barata: Pré-Carga com Resistor
+
+A ideia é simples: em vez de conectar a bateria diretamente aos capacitores, conectar primeiro através de um resistor que limita a corrente a um valor seguro. Depois que os capacitores carregam, curto-circuitar o resistor para operação normal.
+
+**Cálculo da corrente de pré-carga:**
+```
+Com R = 15Ω:
+I_inicial = 60V / 15Ω = 4A
+P_inicial = 60V × 4A = 240W (por frações de segundo)
+```
+
+**Tempo de carga:**
+```
+τ = R × C = 15Ω × 0.002F = 0.03s
+5τ (carga completa) = 0.15s
+```
+
+Os capacitores carregam em ~150ms — praticamente instantâneo para um ser humano. Depois disso, a tensão nos capacitores iguala a da bateria e não há mais diferença de potencial significativa.
+
+**Componentes mínimos:**
+- Resistor de 15Ω, 50W — suporta o pico de 240W por 150ms sem problemas
+- Um meio de curto-circuitar o resistor após a carga (relé, chave manual, etc.)
 
 ---
 
-## Componentes
+## Sistema Atual
 
-| Componente | Especificação | Quantidade | Status |
-|------------|---------------|------------|--------|
-| Relé Principal | 12V, 200A | 1 | ✅ Tem |
-| Relé Pré-Carga | 12V, 40A (automotivo) | 1 | ⬜ Comprar |
-| Resistor | 15Ω, 50W | 1 | ⬜ Comprar |
-| Conversor DC-DC | 20-90V → 12V | 1 | ✅ Tem |
-| Chave Switch | ON/OFF simples | 1 | ✅ Tem |
-| Botão Momentâneo | NO (tipo buzina) | 1 | ✅ Tem |
-| Fusível | 150A | 1 | ⬜ Comprar |
-| Diodo | 1N5408 | 2 | ⬜ Comprar |
-| Conectores XT90 | Macho/Fêmea | 4 | ⬜ Comprar |
-| Conectores XT60 | Macho/Fêmea | 2 | ⬜ Comprar |
-| Caixa | IP65 | 1 | ⬜ Comprar |
-| Cabo 2 AWG | Vermelho/Preto | 2m | ⬜ Comprar |
-| Cabo 18 AWG | Amarelo/Azul/Verde | 3m | ⬜ Comprar |
+### Componentes Instalados
 
----
+| Componente | Especificação |
+|------------|---------------|
+| Relé principal | 12V, 200A (bobina: ~150mA) |
+| Conversor DC-DC | 20-90V → 12V |
+| Resistor de pré-carga | Valor desconhecido (instalado em paralelo com o relé) |
+| Chave switch | ON/OFF |
+| Botão momentâneo | NO (normalmente aberto) |
 
-## Esquema Elétrico
+### Como Funciona
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    CAIXA DE LIGA/DESLIGA                     │
-│                         (IP65)                               │
-└─────────────────────────────────────────────────────────────┘
-
-[Bateria 60V] XT90
-       │
-       ├──► [Fusível 150A] ──┐
-       │                      │
-       ├──► [Relé Principal]  │──► XT90 ──► [VESCs]
-       │      (200A)          │
-       │                      │
-       ├──► [Relé Pré-Carga] ─┘
-       │      (40A)           │
-       │      +               │
-       │   [Resistor 15Ω 50W] │
-       │                      │
-       └──► [Chave Switch] ───┐
-               │              │
-               ▼              │
-        [Botão Momentâneo] ◄──┘
-        (NO - tipo buzina)
-               │
-               ▼
-        [Conversor DC-DC]
-           (20-90V → 12V)
-               │
-               └──► [Bobinas dos Relés]
-                        │
-                        ▼
-                    [GND]
-```
-
----
-
-## Diagrama de Fiação
-
-### Cores dos Fios
-
-| Circuito | Cor | Seção | Função |
-|----------|-----|-------|--------|
-| Positivo 60V | Vermelho | 2 AWG | Alimentação principal |
-| Negativo 60V | Preto | 2 AWG | Retorno principal |
-| Positivo 12V | Amarelo | 18 AWG | Alimentação bobinas |
-| Negativo 12V | Azul | 18 AWG | Retorno bobinas |
-| Sinal botão | Verde | 18 AWG | Acionamento |
-
-### Conexões Detalhadas
-
-```
-Bateria (XT90 Fêmea)
-    │
-    ├── Vermelho 2 AWG ──► Fusível 150A ──► Relé Principal (terminal 30)
-    │                                        Relé Principal (terminal 87) ──► XT90 Macho ──► VESCs
-    │                                        Relé Principal (terminal 85) ──► Amarelo 18 AWG ──┐
-    │                                        Relé Principal (terminal 86) ──► Azul 18 AWG ─────┤
-    │                                                                                           │
-    ├── Vermelho 2 AWG ──► Relé Pré-Carga (terminal 30)                                         │
-    │                      Relé Pré-Carga (terminal 87) ──► Resistor 15Ω ──► Relé Principal (30)│
-    │                      Relé Pré-Carga (terminal 85) ──► Amarelo 18 AWG ─────────────────────┤
-    │                      Relé Pré-Carga (terminal 86) ──► Azul 18 AWG ────────────────────────┤
-    │                                                                                           │
-    └── Vermelho 2 AWG ──► Chave Switch (entrada)                                               │
-                           Chave Switch (saída) ──► Verde 18 AWG ──► Botão NO (terminal 1)      │
-                                                                    Botão NO (terminal 2) ─────► Conversor DC-DC (+)
-                                                                                                 │
-Conversor DC-DC (-) ──► Azul 18 AWG ─────────────────────────────────────────────────────────────┘
+                        ┌─────────────────┐
+  Bateria 60V ──────────┤ Resistor         ├──── VESCs (+)
+              │          └─────────────────┘     │
+              │              │                    │
+              │    ┌─────────┴─────────┐         │
+              └────┤ Relé 200A         ├─────────┘
+                   │ (N.O.)            │
+                   └───────┬───────────┘
                            │
-                           ▼
-                    [GND comum]
+                     bobina 12V
+                           │
+              ┌────────────┴────────────┐
+              │                         │
+        Chave ON/OFF              Botão N.O.
+              │                    (momentâneo)
+              │                         │
+              └─────┬───────────────────┘
+                    │
+             Conversor DC-DC
+              (60V → 12V)
+                    │
+                  GND
 ```
 
----
+**Para ligar:**
 
-## Funcionamento
+1. Chave → ON
+2. Corrente flui pelo resistor → carrega capacitores dos VESCs (sem faísca)
+3. Conversor DC-DC gera 12V → energiza bobina do relé
+4. Relé fecha → curto-circuita o resistor → conexão direta bateria↔VESCs
+5. Sistema operacional
 
-### Sequência de Ligação
+**Para desligar:**
 
-1. **Chave Switch → ON**
-   - Alimenta conversor DC-DC (60V → 12V)
-   - Sistema em standby
+1. Pressionar botão momentâneo → corta alimentação da bobina do relé
+2. Relé abre → sistema desligado
+3. A chave ON/OFF sozinha **não desliga** o sistema
 
-2. **Pressionar Botão Momentâneo**
-   - Energiza bobina do relé de pré-carga
-   - Relé de pré-carga fecha: conecta bateria aos VESCs via resistor
-   - Capacitores dos VESCs carregam gradualmente (sem faísca)
-   - Tempo de carga: < 1 segundo
+### Problemas do Sistema Atual
 
-3. **Relé Principal Liga**
-   - Após pré-carga, relé principal energiza
-   - Curto-circuita o resistor (conexão direta)
-   - Sistema operando normalmente
-
-4. **Soltar Botão**
-   - Relé de pré-carga desliga
-   - Relé principal permanece ligado (auto-retenção via contato auxiliar)
-   - Sistema continua operando
-
-### Sequência de Desligamento
-
-1. **Chave Switch → OFF**
-   - Corta alimentação do conversor DC-DC
-   - Relé principal desliga
-   - Relé de pré-carga desliga
-   - Sistema completamente desligado
+1. **Resistor permanentemente no circuito** — embora a maioria da corrente passe pelo relé (resistência ~mΩ), o resistor em paralelo dissipa energia continuamente quando o relé está fechado
+2. **Sequência de desligamento confusa** — a chave liga mas não desliga, é necessário usar o botão
+3. **Se o botão falhar, não há como desligar** — a não ser desconectar a bateria
+4. **Sem indicador visual** — impossível saber se o sistema está ligado ou desligado sem medição
 
 ---
 
-## Cálculos Elétricos
+## Melhorias Possíveis
 
-### Resistor de Pré-Carga
+### Opção A: Dois Relés (Pré-Carga Dedicada)
 
-**Dados:**
-- Tensão da bateria: 60V
-- Capacitância estimada dos VESCs: 2000µF (2x 1000µF)
-- Tempo de pré-carga desejado: < 1s
+Adicionar um segundo relé (automotivo 12V 40A, ~R$ 15-25) dedicado exclusivamente à pré-carga. O resistor só fica no circuito durante os ~150ms de carga.
 
-**Cálculo:**
+**Esquema proposto:**
 ```
-Tempo de carga (5τ) = 5 × R × C
-Para 0.5s: R = 0.5 / (5 × 0.002) = 50Ω
-Para 0.1s: R = 0.1 / (5 × 0.002) = 10Ω
-
-Corrente de pico: I = V / R = 60V / 15Ω = 4A
-Potência de pico: P = V² / R = 60² / 15 = 240W (muito breve)
-Potência média durante carga: ~50W
+  Bateria 60V ──────┬──────────────────────────────── VESCs (+)
+                    │                                    │
+          ┌─────────┴──────────┐                         │
+          │ Relé Pré-Carga 40A ├──── Resistor 15Ω 50W ───┤
+          │ (N.O.)             │                         │
+          └─────────┬──────────┘                         │
+                    │                                    │
+          ┌─────────┴──────────┐                         │
+          │ Relé Principal 200A ├────────────────────────┘
+          │ (N.O.)             │
+          └─────────┬──────────┘
+                    │
+              bobinas 12V
 ```
 
-**Valor escolhido:** 15Ω, 50W (margem de segurança)
+**Lógica de operação:**
+1. Chave ON → pressiona botão → relé de pré-carga liga → capacitores carregam via resistor
+2. Relé principal liga (manualmente ou com delay) → curto-circuita resistor
+3. Solta botão → relé de pré-carga desliga → resistor fora do circuito
+4. Relé principal permanece ligado (auto-retenção)
+5. Chave OFF → corta alimentação → relé principal desliga → sistema off
 
-### Relé de Pré-Carga
+**Vantagens:**
+- Resistor fora do circuito durante operação normal
+- Desligamento simples: basta a chave OFF
+- Componentes baratos e fáceis de encontrar
 
-- Corrente de pré-carga: 4A (pico)
-- Relé automotivo 40A: mais que suficiente
-- Tensão da bobina: 12V
+**Desvantagens:**
+- Mais fiação e complexidade
+- Dois relés para gerenciar
+- Necessita lógica de auto-retenção no relé principal
 
-### Fusível
+### Opção B: Chave Seletora (Manual)
 
-- Corrente máxima do sistema: 100A
-- Fusível escolhido: 150A (margem de 50%)
-- Protege contra curto-circuito
+Substituir o sistema de relés por uma chave seletora de 3 posições: OFF → PRÉ-CARGA → ON.
 
----
+Na posição PRÉ-CARGA, a corrente passa pelo resistor. Na posição ON, a corrente passa direto. Sem eletrônica, sem relés.
 
-## Instruções de Montagem
+**Vantagens:**
+- Extremamente simples e robusto
+- Sem eletrônica que pode falhar
+- Operação intuitiva
 
-### Passo 1: Preparar a Caixa
+**Desvantagens:**
+- Precisa de uma chave de alta corrente (carregadora de bateria ou similar)
+- Operação manual em dois passos
+- Difícil encontrar chave adequada para 100A+ no Brasil
 
-1. Furar entradas para cabos (PG13 ou PG16)
-2. Instalar conectores XT90 e XT60
-3. Preparar suportes para relés
-4. Instalar chave e botão no painel frontal
+### Opção C: Anti-Spark Switch Comercial
 
-### Passo 2: Instalar Relés
+Substituir todo o sistema por um anti-spark switch dedicado (ex: Flipsky, ~R$ 200-300).
 
-1. **Relé Principal (200A):**
-   - Fixar na base da caixa
-   - Conectar terminals 30 e 87 (alta corrente)
-   - Conectar bobina (85 e 86)
+**Vantagens:**
+- Plug-and-play, sem projeto
+- Compacto
+- Pré-carga automática via MOSFET
 
-2. **Relé Pré-Carga (40A):**
-   - Fixar ao lado do relé principal
-   - Conectar terminal 30 (entrada)
-   - Conectar terminal 87 ao resistor
-   - Conectar bobina (85 e 86)
+**Desvantagens:**
+- Caro
+- Limitado em corrente
+- Se queimar, é componente único sem reposição fácil
 
-### Passo 3: Instalar Resistor
+### Opção D: MOSFET com Pré-Carga (DIY)
 
-1. Conectar entre relé pré-carga (87) e relé principal (30)
-2. Fixar em suporte metálico (dissipação de calor)
-3. Manter afastado de componentes plásticos
+Circuito com MOSFET de alta corrente (ex: IRFP4468) controlado por um RC para ramp de gate lenta, fazendo a pré-carga automaticamente.
 
-### Passo 4: Instalar Conversor DC-DC
+**Vantagens:**
+- Sem partes mecânicas (sem desgaste de contatos)
+- Pré-carga automática e controlada
+- Barato em componentes (~R$ 30-50)
 
-1. Entrada: 60V (conectar após chave switch)
-2. Saída: 12V para bobinas dos relés
-3. Fixar na parede da caixa
+**Desvantagens:**
+- Complexidade eletrônica significativa
+- Necessita dissipador grande
+- Falha em MOSFET pode ser perigosa (curto permanente)
+- Exige conhecimento de eletrônica de potência para projetar
 
-### Passo 5: Instalar Chave e Botão
+### Comparação
 
-1. **Chave Switch:**
-   - Furar painel frontal
-   - Instalar com porca de fixação
-   - Conectar fios de controle
-
-2. **Botão Momentâneo:**
-   - Furar painel frontal
-   - Instalar com porca de fixação
-   - Conectar fios NO (Normalmente Aberto)
-
-### Passo 6: Fazer Conexões
-
-1. Conectar fiação de alta corrente (2 AWG)
-2. Conectar fiação de controle (18 AWG)
-3. Instalar diodos de proteção nas bobinas
-4. Verificar todas as conexões
-
-### Passo 7: Testar
-
-#### Teste 1 - Sem Carga
-1. Conectar bateria
-2. Ligar chave
-3. Pressionar botão
-4. Verificar se relés acionam
-5. Medir tensão de saída
-
-#### Teste 2 - Com Carga
-1. Conectar VESCs
-2. Repetir sequência de ligação
-3. Verificar se não há faísca
-4. Medir corrente de pré-carga
-
-#### Teste 3 - Desligamento
-1. Desligar chave
-2. Verificar se sistema desliga imediatamente
-3. Verificar se não há faísca
-
----
-
-## Lista de Compras
-
-### Eletrônica
-
-| Item | Especificação | Estimativa de Preço | Onde Comprar |
-|------|---------------|---------------------|--------------|
-| Relé pré-carga | 12V 40A automotivo | R$ 15-25 | Mercado Livre |
-| Resistor | 15Ω 50W | R$ 10-15 | Mercado Livre |
-| Fusível 150A | Com suporte | R$ 20-30 | Mercado Livre |
-| Diodo 1N5408 | 3A 1000V (pacote 10) | R$ 5-10 | Mercado Livre |
-
-### Conectores
-
-| Item | Quantidade | Estimativa de Preço |
-|------|------------|---------------------|
-| XT90 macho | 2 | R$ 10-15 |
-| XT90 fêmea | 2 | R$ 10-15 |
-| XT60 macho | 1 | R$ 5-8 |
-| XT60 fêmea | 1 | R$ 5-8 |
-
-### Caixa e Acessórios
-
-| Item | Especificação | Estimativa de Preço |
-|------|---------------|---------------------|
-| Caixa | IP65 200x150x100mm | R$ 30-50 |
-| Prensa-cabo | PG13 (2x) | R$ 5-10 |
-| Terminal de conexão | 2 AWG (4x) | R$ 10-15 |
-| Fita isolante | Preta | R$ 5-10 |
-
-**Total estimado:** R$ 130-210
-
----
-
-## Manutenção
-
-### Verificações Periódicas (a cada 3 meses)
-
-- [ ] Verificar aperto dos terminais
-- [ ] Verificar estado dos conectores XT90/XT60
-- [ ] Verificar funcionamento da chave e botão
-- [ ] Verificar sinais de aquecimento nos relés
-- [ ] Medir tensão de saída do conversor DC-DC
-
-### Possíveis Problemas
-
-| Problema | Causa Provável | Solução |
-|----------|----------------|---------|
-| Faísca na ligação | Resistor de pré-carga defeituoso | Substituir resistor |
-| Relé não aciona | Bobina queimada | Substituir relé |
-| Sistema não desliga | Chave switch defeituosa | Substituir chave |
-| Aquecimento excessivo | Conexão frouxa | Apertar terminais |
-
----
-
-## Melhorias Futuras
-
-- [ ] Adicionar LED indicador de status
-- [ ] Adicionar voltímetro digital
-- [ ] Implementar proteção térmica
-- [ ] Adicionar contador de ciclos (para manutenção preventiva)
+| Critério | A: 2 Relés | B: Chave Seletora | C: Comercial | D: MOSFET DIY |
+|----------|------------|-------------------|--------------|----------------|
+| Custo | ~R$ 50 | ~R$ 30-80 | ~R$ 200-300 | ~R$ 30-50 |
+| Complexidade | Média | Baixa | Baixa | Alta |
+| Robustez | Alta | Muito alta | Média | Baixa |
+| Desligamento simples | Sim | Sim | Sim | Sim |
+| Reposição fácil | Sim | Sim | Não | Parcial |
+| Sem resistor permanente | Sim | Sim | N/A | N/A |
 
 ---
 
@@ -320,16 +224,3 @@ Potência média durante carga: ~50W
 
 - [Especificações Técnicas Gerais](especificacoes.md)
 - [Sistema Busbar](../busbar/busbar.md)
-- [Bateria e BMS](../specs/bateria.md) (a criar)
-
----
-
-## Histórico de Revisões
-
-| Data | Versão | Alterações |
-|------|--------|------------|
-| 2026-06-04 | 1.0 | Documento inicial criado |
-
----
-
-**Nota:** Este documento está em desenvolvimento. Atualizações serão feitas conforme a montagem e testes do sistema.

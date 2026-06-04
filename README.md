@@ -8,11 +8,12 @@ Triciclo elétrico documentado em todos os detalhes.
 |------|---------|
 | Motor dianteiro | Hub motor Citycoco ~3 kW (sensorless FOC) |
 | Motor traseiro | Motor com redução + diferencial (Hall) |
-| Bateria | 16S8P EVE INR18650-35V, 60V 28Ah |
-| BMS | Daly Smart BMS 100A 16S (WiFi + CAN) |
+| Baterias | 2x 16S em paralelo: 8P (28Ah, BMS 100A) + 6P (21Ah, BMS 60A) |
+| Células | EVE INR18650-35V (3500 mAh, 10.2A) |
 | Controlador | 2x Flipsky FSESC 75200 (CAN bus) |
 | Tensão | 60V nominal / 67.2V máx |
-| Corrente máx. | ~80A contínuos / 100A prático |
+| Capacidade total | 49 Ah |
+| Corrente máx. | ~140A contínuos / 100A prático (BMS menor) |
 | Autonomia | _a definir_ |
 | Velocidade máx. | _a definir_ |
 | Peso total | _a definir_ |
