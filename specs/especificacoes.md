@@ -177,6 +177,25 @@ Duas baterias 16S ligadas em paralelo via busbar.
 
 ---
 
+## Proteção
+
+### Fusíveis — Spintend Physical Fuse v01
+
+2 unidades instaladas, uma por VESC, na linha positiva entre busbar e controlador.
+
+| Parâmetro | Valor |
+|-----------|-------|
+| Modelo | Spintend Physical Fuse v01 by Hohn |
+| Configuração por unidade | 2× 60A em paralelo = 120A |
+| Tensão máxima | 100V |
+| Conectores | Amass XT90PW (macho/fêmea) |
+| Curva de disparo (120A) | 100% In: >4h / 200% In: <60s |
+| Posição | Linha positiva, entre busbar e VESC |
+
+Ver documentação completa: [Sistema de Liga/Desliga](sistema-ligadesliga.md)
+
+---
+
 ## Distribuição de Potência
 
 | Componente | Função |
@@ -184,6 +203,7 @@ Duas baterias 16S ligadas em paralelo via busbar.
 | Copper busbar | Ponto central de distribuição |
 | Parafusos inox M6 | Conexão dos cabos |
 | Caixa protetora (bus box) | Isolamento e proteção |
+| Fusíveis Spintend 120A | Proteção por VESC (sobrecarga/curto) |
 
 Ver documentação completa: [Sistema Busbar](../busbar/busbar.md)
 
@@ -196,8 +216,8 @@ Ver documentação completa: [Sistema Busbar](../busbar/busbar.md)
 | Relé principal | 12V, 200A |
 | Conversor DC-DC | 20-90V → 12V |
 | Chave switch | ON/OFF |
-| Botão momentâneo | NO/NC |
-| Resistor pré-carga | Desconhecido (a substituir) |
+| Botão momentâneo | NO |
+| Resistor pré-carga | Desconhecido (em paralelo com relé) |
 
 Ver documentação completa: [Sistema de Liga/Desliga](sistema-ligadesliga.md)
 

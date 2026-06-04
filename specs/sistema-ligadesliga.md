@@ -66,14 +66,38 @@ Os capacitores carregam em ~150ms — praticamente instantâneo para um ser huma
 
 | Componente | Especificação |
 |------------|---------------|
-| Relé principal | 12V, 200A (bobina: ~150mA) |
+| Relé principal | 12V, 200A |
 | Conversor DC-DC | 20-90V → 12V |
 | Resistor de pré-carga | Valor desconhecido (instalado em paralelo com o relé) |
 | Chave switch | ON/OFF |
 | Botão momentâneo | NO (normalmente aberto) |
+| Fusíveis (2×) | Spintend Physical Fuse v01, 120A cada (2× 60A paralelo), 100V |
 
 ### Como Funciona
 
+```
+                         ┌─────────────────┐
+  Bateria 60V ──────────┤ Resistor         ├───────── [Fusível 120A] ──► VESC dianteiro
+              │          └─────────────────┘              │
+              │              │                            │
+              │    ┌─────────┴─────────┐         [Fusível 120A] ──► VESC traseiro
+              └────┤ Relé 200A         ├─────────┘
+                   │ (N.O.)            │
+                   └───────┬───────────┘
+                           │
+                     bobina 12V
+                           │
+              ┌────────────┴────────────┐
+              │                         │
+        Chave ON/OFF              Botão N.O.
+              │                    (momentâneo)
+              │                         │
+              └─────┬───────────────────┘
+                    │
+             Conversor DC-DC
+              (60V → 12V)
+                    │
+                  GND
 ```
                         ┌─────────────────┐
   Bateria 60V ──────────┤ Resistor         ├──── VESCs (+)
